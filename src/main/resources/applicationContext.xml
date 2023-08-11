@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/util
+            http://www.springframework.org/schema/util/spring-util-4.0.xsd
+            http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+        <!--构造器注入(构建方法注入)-->
+        <bean id="student" class="com.demo.test.Student" scope="prototype">
+            <constructor-arg name="id" value="1"></constructor-arg>
+            <constructor-arg name="userName" value="李四"></constructor-arg>
+            <constructor-arg name="age" value="18"></constructor-arg>
+            <constructor-arg name="gender" value="男"></constructor-arg>
+            <property name="hobbyList">
+                <!-- 通过list标签往bean对象注入list值-->
+                <list>
+                    <value>睡觉</value>
+                    <value>打游戏</value>
+                    <value>学习</value>
+                </list>
+            </property>
+        </bean>
+
+        <!--setter注入(属性注入)-->
+        <bean id="student2" class="com.demo.test.Student">
+            <property name="id" value="2"></property>
+            <property name="age" value="20"></property>
+            <property name="userName" value="王五"></property>
+            <property name="gender" value="男"></property>
+            <property name="courses">
+                <!-- 通过array标签往bean对象注入数组值 -->
+                <array>
+                    <value>MySQL</value>
+                    <value>Java</value>
+                    <value>Html</value>
+                    <value>Css</value>
+                    <value>Js</value>
+                </array>
+            </property>
+        </bean>
+
+        <!-- 通过spring提供的p全名空间来简写属性注入 -->
+        <bean id="stu" class="com.demo.test.Student" p:id="3"  p:age="18" p:userName="如花" p:gender="女">
+            <!--通过ref属性将spring 配置文件中定义的课程集合对象赋值给courses属性-->
+            <property name="courses" ref="stuCourses"/>
+        </bean>
+
+        <!-- 定义一个课程集合的java对象:id='stuCourses' -->
+        <util:list id="stuCourses">
+            <value>Java</value>
+            <value>MySQL</value>
+        </util:list>
+
+        <!-- 使用手动装配的方式来给teacher赋值 -->
+        <bean id="teacher" class="com.demo.test.Teacher" p:id="1" p:name="曾老师">
+            <property name="student" ref="student"></property>
+        </bean>
+
+        <!--使用autowire='byType'来实现自动装配teacher对象-->
+<!--        <bean id="teacher2" class="com.demo.test.Teacher" p:id="2" p:name="森老师" autowire="byType"></bean>-->
+
+</beans>

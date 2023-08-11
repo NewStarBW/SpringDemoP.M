@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/util
+            http://www.springframework.org/schema/util/spring-util-4.0.xsd
+            http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+        <!-- 通过spring提供的p全名空间来简写属性注入 -->
+        <bean id="student" class="com.demo.test.Student" p:id="3" p:userName="如花" p:age="18" p:gender="女">
+            <!--通过ref属性将spring 配置文件中定义的课程集合对象赋值给courses属性-->
+            <property name="courses" ref="stuCourses"/>
+        </bean>
+
+        <!-- 定义一个课程集合的java对象:id='stuCourses' -->
+        <util:list id="stuCourses">
+            <value>Java</value>
+            <value>MySQL</value>
+        </util:list>
+
+        <!-- 使用手动装配的方式来给teacher赋值 -->
+        <bean id="teacher" class="com.demo.test.Teacher" p:id="1" p:name="曾老师-手动装配">
+            <property name="student" ref="student"></property>
+        </bean>
+
+        <!--使用autowire='byType'来实现自动装配teacher对象-->
+        <bean id="teacher2" class="com.demo.test.Teacher" p:id="2" p:name="森老师-byType自动装配" autowire="byType"></bean>
+
+        <!--使用autowire='byName'来实现自动装配teacher对象-->
+        <bean id="teacher3" class="com.demo.test.Teacher" p:id="2" p:name="byName自动装配的老师" autowire="byName"></bean>
+
+</beans>
